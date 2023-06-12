@@ -4,7 +4,21 @@ We assess the robustness of 11 widely-used adaptation methods across 4 vision-la
 
 
 ## Installation
-
+```bash
+# git clone 
+git clone git@github.com:adarobustness/adaptation_robustness.git
+cd adaptation_robustness
+# create conda environment (optional)
+conda create -n adaptation_robustness python=3.8
+conda activate adaptation_robustness
+# install requirements
+pip install -r requirements.txt
+ # install langugae evaluation 
+pip install git+https://github.com/bckim92/language-evaluation.git
+python -c "import language_evaluation; language_evaluation.download('coco')"
+# Download T5/BART backbone checkpoint
+python download_backbones.py
+```
 
 ## Code Structure
 
