@@ -21,10 +21,111 @@ python download_backbones.py
 ```
 
 ## Code Structure
+```bash
+├── VL-T5
+│   ├── original_scripts
+│   │   ├── image_clip_bart # adapt CLIP-BART+adaptation methods
+│   │   ├── image_clip_bart_corr_hp # inference CLIP-BArt+adaptation methods with different hyperparameters 
+│   │   ├── image_clip_bart_corr_subset # adapt CLIP-BART+adaptation methods with different subsets of adaptation data
+│   │   ├── image_clip_bart_corr_test # inference CLIP-BART+adaptation methods
+│   │   ├── image_clip_bart_hp # adapt CLIP-BART+adaptation methods with different hyperparameters
+│   │   ├── image_clip_t5 # adapt CLIP-T5+adaptation methods
+│   │   ├── image_clip_t5_corr_hp # inference CLIP-T5+adaptation methods with different hyperparameters
+│   │   ├── image_clip_t5_corr_subset # adapt CLIP-T5+adaptation methods with different subsets of adaptation data
+│   │   ├── image_clip_t5_corr_test # inference CLIP-T5+adaptation methods
+│   │   └── image_clip_t5_hp # adapt CLIP-T5+adaptation methods with different hyperparameters
+│   └── src
+│       ├── clip # CLIP model
+│       ├── adapters # Adapter, Compacter, Hyperformer
+│       ├── lora # LoRA adaptation method 
+│       ├── prompt # prompting adaptation methods
+│       ├── my_transformers # T5/BART model
+│       ├── caption*.py # captioning tasks
+│       ├── gqa*.py # GQA tasks
+│       ├── nlvr*.py # NLVR tasks
+│       ├── vqa*.py # VQA tasks 
+│       ├── multitask.py # Entrance of multitask setting 
+├── download_backbones.py # download T5/BART backbone checkpoint
+├── feature_extraction # extract image features
 
+```
 ## Data & Pre-trained Models Preparation
+### Default Directory Structure
+This repo assumes the following directory structure for data and pre-trained models:
+```bash
+├── datasets # datasets, extracted features, and corrupted datasets
+│   ├── COCO
+│   │   ├── images 
+│   │   ├── clip_features
+│   ├── VG
+│   │   ├── images 
+│   │   ├── clip_features
+│   ├── GQA
+│   │   ├── images 
+│   │   ├── clip_features
+│   ├── nlvr
+│   │   ├── images 
+│   │   ├── clip_features
+│   ├── vqa
+│   ├── lxmert
+├── VL-T5
+│   ├── snap # adaptation checkpoints and output logs
+│   │   └── VLBart_multitask # pre-trained CLIP-BART+adaptation model
+│   │   └── VLT5_multitask # pre-trained CLIP-T5+adaptation model
+```
+### Download Datasets & Pre-trained Models
+1. Download processed CLIP features from this [link](https://drive.google.com/file/d/1O_RU1iFh_sbItZCTkOHUrbVIQQ_89Djj/view?usp=sharing) and put extracted files under `datasets` directory.
+2. Download [VQA](https://visualqa.org/download.html), [NLVR^2](https://lil.nlp.cornell.edu/nlvr/), and [GQA](https://cs.stanford.edu/people/dorarad/gqa/download.html) and organize the data following the default directory structure.
+3. Download pre-trained CLIP-BART+adaptation model from this [link]() and put extracted files under `VL-T5/snap` directory.
 
-## Usage
+### Dataset Corruption
+1. Install [corruption](https://github.com/adarobustness/corruption)
+2. Run `python corruption.py ...` following instructions from [corruption](https://github.com/adarobustness/corruption) to generate corrupted datasets
+3. Put corrupted datasets under `datasets` directory following the default directory structure.
+
+### Feature Extraction on Corrupted Datasets
+```bash
+cd feature_extraction
+bash extract_clip_features.sh \
+  ${CORRUPTION_METHOD_NAME} \
+  ${SEVERITY} \
+  ${GPU_ID} \
+  ${DATASET_NAME} \
+  ${PREFIX}
+```
+
+## Benchmarking Robustness of Adaptation Methods
+### Adaptation (optional)
+```bash
+# Adapt CLIP-BART+adaptation methods
+bash original_scripts/image_clip_bart/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/multiple_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/half_shared_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/single_adapter.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/hyperformer.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/multiple_compacters.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/single_compacter.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/multiple_lora.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/single_lora.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/multiple_prompts.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_bart/single_prompt.sh ${PORT} --gpu_number ${GPU_NUMBER} 
+# Adapt CLIP-T5+adaptation methods
+bash original_scripts/image_clip_t5/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_t5/multiple_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_t5/single_adapter.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_t5/hyperformer.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_t5/multiple_compacters.sh ${PORT} --gpu_number ${GPU_NUMBER}
+bash original_scripts/image_clip_t5/single_compacter.sh ${PORT} --gpu_number ${GPU_NUMBER}
+
+```
+
+### Robusntess Evaluation
+```bash
+bash original_scripts/image_clip_bart_corr_test/full_finetuning.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+```
 
 ## Acknowledgement
 This repo is built based on the following repos:
