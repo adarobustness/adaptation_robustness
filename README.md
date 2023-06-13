@@ -136,6 +136,7 @@ bash original_scripts/image_clip_bart/single_lora.sh ${PORT} --gpu_number ${GPU_
 
 ### Robusntess Evaluation
 ```bash
+# Inference CLIP-BART+adaptation methods on corrupted image datasets
 bash original_scripts/image_clip_bart_corr_test/full_finetuning.sh ${PORT} \
   --img_corruption_method ${METHOD} \
   --img_corruption_severity ${SEVERITY} \
@@ -190,7 +191,62 @@ bash original_scripts/image_clip_bart_corr_test/single_prompt.sh ${PORT} \
   --img_corruption_method ${METHOD} \
   --img_corruption_severity ${SEVERITY} \
   --gpu_number ${GPU_NUMBER} 
+
+# Inference CLIP-BART+adaptation methods on corrupted text datasets
+bash original_scripts/image_clip_bart_corr_test/full_finetuning.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
   
+bash original_scripts/image_clip_bart_corr_test/multiple_adapters.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/half_shared_adapters.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/single_adapter.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/hyperformer.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/multiple_compacters.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/single_compacter.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/multiple_lora.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/single_lora.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/multiple_prompts.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/single_prompt.sh ${PORT} \
+  --text_corruption_method ${METHOD} \
+  --text_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
 
 ```
 
