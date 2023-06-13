@@ -95,7 +95,7 @@ bash extract_clip_features.sh \
 ```
 
 ## Benchmarking Robustness of Adaptation Methods
-### Adaptation (optional)
+### Running Adaptation (optional)
 ```bash
 # Adapt CLIP-BART+adaptation methods
 bash original_scripts/image_clip_bart/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER}
@@ -117,6 +117,21 @@ bash original_scripts/image_clip_t5/hyperformer.sh ${PORT} --gpu_number ${GPU_NU
 bash original_scripts/image_clip_t5/multiple_compacters.sh ${PORT} --gpu_number ${GPU_NUMBER}
 bash original_scripts/image_clip_t5/single_compacter.sh ${PORT} --gpu_number ${GPU_NUMBER}
 
+# Adapt CLIP-BART+adaptation methods with different hyperparameters
+bash original_scripts/image_clip_bart_hp/single_prompt.sh ${PORT}  --gpu_number ${GPU_NUMBER} --encoder_prompt_len ${PROMPT_LEN}
+bash original_scripts/image_clip_bart_hp/single_prompt_position.sh ${PORT}  --gpu_number ${GPU_NUMBER} --encoder_prompt_position ${PROMPT_POSITION}
+bash original_scripts/image_clip_bart_hp/single_adapter.sh ${PORT}  --gpu_number ${GPU_NUMBER} --reduction_factor ${REDUCTION_FACTOR}
+bash original_scripts/image_clip_bart_hp/single_lora.sh ${PORT}  --gpu_number ${GPU_NUMBER} --lora_dim ${LORA_DIM}
+
+# Adapt CLIP-BART+adaptation methods with different adaptation data size
+bash original_scripts/image_clip_bart/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/hyperformer.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/single_adapter.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/multiple_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/multiple_compacters.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/single_compacter.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+bash original_scripts/image_clip_bart/single_lora.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
+
 ```
 
 ### Robusntess Evaluation
@@ -125,6 +140,58 @@ bash original_scripts/image_clip_bart_corr_test/full_finetuning.sh ${PORT} \
   --img_corruption_method ${METHOD} \
   --img_corruption_severity ${SEVERITY} \
   --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/multiple_adapters.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/half_shared_adapters.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/single_adapter.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/hyperformer.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/multiple_compacters.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/single_compacter.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+bash original_scripts/image_clip_bart_corr_test/multiple_lora.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/single_lora.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/multiple_prompts.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+
+bash original_scripts/image_clip_bart_corr_test/single_prompt.sh ${PORT} \
+  --img_corruption_method ${METHOD} \
+  --img_corruption_severity ${SEVERITY} \
+  --gpu_number ${GPU_NUMBER} 
+  
+
 ```
 
 ## Acknowledgement
