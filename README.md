@@ -34,6 +34,7 @@ python download_backbones.py
 │   │   ├── image_clip_t5_corr_subset # adapt CLIP-T5+adaptation methods with different subsets of adaptation data
 │   │   ├── image_clip_t5_corr_test # inference CLIP-T5+adaptation methods
 │   │   └── image_clip_t5_hp # adapt CLIP-T5+adaptation methods with different hyperparameters
+│   ├── scripts # scripts for experiments deployment in a more convenient way
 │   └── src
 │       ├── clip # CLIP model
 │       ├── adapters # Adapter, Compacter, Hyperformer
@@ -261,6 +262,28 @@ bash original_scripts/image_clip_bart_corr_test/single_prompt.sh ${PORT} \
   --text_corruption_method ${METHOD} \
   --text_corruption_severity ${SEVERITY} \
   --gpu_number ${GPU_NUMBER} 
+
+
+# We also provide some scripts to deploy multiple inference experiments at the same time
+# For example, the following commands will deploy inference experiments of full fine-tuning on all image corruptions with severity 5 on GPU 0 to 4, respectively.
+pids=()
+nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_0.sh 0 5 26587 > corr_test_text_full_finetuning_severity_5_1.out 2>&1 &
+pids+=($!)
+nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_1.sh 1 5 26687 > corr_test_text_full_finetuning_severity_5_2.out 2>&1 &
+pids+=($!)
+nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_2.sh 2 5 26787 > corr_test_text_full_finetuning_severity_5_3.out 2>&1 &
+pids+=($!)
+nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_3.sh 3 5 26887 > corr_test_text_full_finetuning_severity_5_4.out 2>&1 &
+pids+=($!)
+nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_4.sh 4 5 26987 > corr_test_text_full_finetuning_severity_5_5.out 2>&1 &
+pids+=($!)
+
+echo "active processes: ${#pids[@]} for full finetuning"
+for ((i=${#pids[@]}; i>1; i--)) ; do
+    wait -n
+done
+echo "all processes finished for full finetuning on all image corruptions with severity 5"
+
 
 ```
 
