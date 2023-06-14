@@ -86,6 +86,11 @@ This repo assumes the following directory structure for data and pre-trained mod
 ### Feature Extraction on Corrupted Datasets
 ```bash
 cd feature_extraction
+# CORRUPTION_METHOD_NAME: corruption method name, e.g., 'gaussian_noise'
+# SEVERITY: corruption severity, e.g., '1', '2', '3', '4', '5'
+# GPU_ID: GPU ID, e.g., '0'
+# DATASET_NAME: dataset name, e.g., 'coco', 'vg', 'gqa', 'nlvr', 'vqa'
+# PREFIX: prefix of the output file, e.g., 'coco', 'vg', 'gqa', 'nlvr', 'vqa'
 bash extract_clip_features.sh \
   ${CORRUPTION_METHOD_NAME} \
   ${SEVERITY} \
@@ -98,6 +103,8 @@ bash extract_clip_features.sh \
 ### Running Adaptation (optional)
 ```bash
 # Adapt CLIP-BART+adaptation methods
+# PORT: port number, e.g., '26000'
+# GPU_NUMBER: number of GPUs, e.g., '1'
 bash original_scripts/image_clip_bart/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER}
 bash original_scripts/image_clip_bart/multiple_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER}
 bash original_scripts/image_clip_bart/half_shared_adapters.sh ${PORT} --gpu_number ${GPU_NUMBER}
@@ -118,12 +125,17 @@ bash original_scripts/image_clip_t5/multiple_compacters.sh ${PORT} --gpu_number 
 bash original_scripts/image_clip_t5/single_compacter.sh ${PORT} --gpu_number ${GPU_NUMBER}
 
 # Adapt CLIP-BART+adaptation methods with different hyperparameters
+# PROMPT_LEN: prompt length, e.g., '64'
+# PROMPT_POSITION: prompt position, e.g., 'front'
+# REDUCTION_FACTOR: reduction factor, e.g., '2'
+# LORA_DIM: LoRA dimension, e.g., '64'
 bash original_scripts/image_clip_bart_hp/single_prompt.sh ${PORT}  --gpu_number ${GPU_NUMBER} --encoder_prompt_len ${PROMPT_LEN}
 bash original_scripts/image_clip_bart_hp/single_prompt_position.sh ${PORT}  --gpu_number ${GPU_NUMBER} --encoder_prompt_position ${PROMPT_POSITION}
 bash original_scripts/image_clip_bart_hp/single_adapter.sh ${PORT}  --gpu_number ${GPU_NUMBER} --reduction_factor ${REDUCTION_FACTOR}
 bash original_scripts/image_clip_bart_hp/single_lora.sh ${PORT}  --gpu_number ${GPU_NUMBER} --lora_dim ${LORA_DIM}
 
 # Adapt CLIP-BART+adaptation methods with different adaptation data size
+# ADAPTATION_DATA_SIZE: adaptation data size, e.g., '0.2', '0.4'
 bash original_scripts/image_clip_bart/full_finetuning.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
 bash original_scripts/image_clip_bart/hyperformer.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
 bash original_scripts/image_clip_bart/single_adapter.sh ${PORT} --gpu_number ${GPU_NUMBER} --train_topk ${ADAPTATION_DATA_SIZE}
@@ -137,6 +149,8 @@ bash original_scripts/image_clip_bart/single_lora.sh ${PORT} --gpu_number ${GPU_
 ### Robusntess Evaluation
 ```bash
 # Inference CLIP-BART+adaptation methods on corrupted image datasets
+# METHOD: corruption method, e.g. gaussian_noise
+# SEVERITY: corruption severity, e.g. 1, 2, 3, 4, 5
 bash original_scripts/image_clip_bart_corr_test/full_finetuning.sh ${PORT} \
   --img_corruption_method ${METHOD} \
   --img_corruption_severity ${SEVERITY} \
