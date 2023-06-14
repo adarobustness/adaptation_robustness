@@ -326,7 +326,11 @@ nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple
 nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 5 29187 > corr_test_multiple_adapters_2.out 2>&1 &
 nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 5 29287 > corr_test_multiple_adapters_3.out 2>&1 &
 ```
-
+- `VL-T5/src/collect_results.py` is used to collect the results of the above experiments.
+```bash
+cd VL-T5
+python src/colect_results.py
+```
 
 ## Acknowledgement
 This repo is built based on the following repos:
