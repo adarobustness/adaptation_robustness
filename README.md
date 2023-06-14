@@ -148,6 +148,7 @@ bash original_scripts/image_clip_bart/single_lora.sh ${PORT} --gpu_number ${GPU_
 ```
 
 ### Robusntess Evaluation
+- Specify corruption methods
 ```bash
 # Inference CLIP-BART+adaptation methods on corrupted image datasets
 # METHOD: corruption method, e.g. gaussian_noise
@@ -262,30 +263,70 @@ bash original_scripts/image_clip_bart_corr_test/single_prompt.sh ${PORT} \
   --text_corruption_method ${METHOD} \
   --text_corruption_severity ${SEVERITY} \
   --gpu_number ${GPU_NUMBER} 
+```
 
-
-# We also provide some scripts to deploy multiple inference experiments at the same time
-# For example, the following commands will deploy inference experiments of full fine-tuning on all image corruptions with severity 5 on GPU 0 to 4, respectively.
+- We also provide some scripts (`VL-T5/scripts`) to deploy multiple inference experiments at the same time. For example, the following commands will deploy inference experiments of full fine-tuning on all image corruptions with severity 5 on GPU 0 to 3, respectively.
+```bash
 pids=()
-nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_0.sh 0 5 26587 > corr_test_text_full_finetuning_severity_5_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/full_finetuning/corr_test_full_finetuning_0.sh 0 5 26587 > corr_test_image_full_finetuning_severity_5_1.out 2>&1 &
 pids+=($!)
-nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_1.sh 1 5 26687 > corr_test_text_full_finetuning_severity_5_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/full_finetuning/corr_test_full_finetuning_1.sh 1 5 26687 > corr_test_image_full_finetuning_severity_5_2.out 2>&1 &
 pids+=($!)
-nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_2.sh 2 5 26787 > corr_test_text_full_finetuning_severity_5_3.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/full_finetuning/corr_test_full_finetuning_2.sh 2 5 26787 > corr_test_image_full_finetuning_severity_5_3.out 2>&1 &
 pids+=($!)
-nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_3.sh 3 5 26887 > corr_test_text_full_finetuning_severity_5_4.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/full_finetuning/corr_test_full_finetuning_3.sh 3 5 26887 > corr_test_image_full_finetuning_severity_5_4.out 2>&1 &
 pids+=($!)
-nohup bash scripts/corr_text_test_clip_bart/full_finetuning/corr_test_full_finetuning_4.sh 4 5 26987 > corr_test_text_full_finetuning_severity_5_5.out 2>&1 &
-pids+=($!)
-
 echo "active processes: ${#pids[@]} for full finetuning"
 for ((i=${#pids[@]}; i>1; i--)) ; do
     wait -n
 done
 echo "all processes finished for full finetuning on all image corruptions with severity 5"
-
-
 ```
+- More examples of deploying inference multiple adapters based on CLIP-BART against both all image corruptions and all text corruptions with severity 1 to 5 on GPU 0 to 3, respectively. 
+```bash
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 0 1 26587 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 0 1 26687 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 1 1 26787 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 1 1 26887 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 2 26187 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 2 26287 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 2 26387 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 2 26487 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 0 3 26587 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 0 3 26687 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 1 3 26787 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 1 3 26887 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 4 26987 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 4 26187 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 4 26287 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 4 26387 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 5 26487 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 5 27087 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 5 27187 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_image_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 5 27287 > corr_test_multiple_adapters_3.out 2>&1 &
+
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 0 1 27387 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 0 1 27487 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 1 1 27587 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 1 1 27687 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 2 27787 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 2 27887 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 2 27987 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 2 28087 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 0 3 28187 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 0 3 28287 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 1 3 28387 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 1 3 28487 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 4 28587 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 4 28687 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 4 28787 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 4 28887 > corr_test_multiple_adapters_3.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_0.sh 2 5 28987 > corr_test_multiple_adapters_0.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_1.sh 2 5 29087 >  corr_test_multiple_adapters_1.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_2.sh 3 5 29187 > corr_test_multiple_adapters_2.out 2>&1 &
+nohup bash scripts/corr_text_test_clip_bart/multiple_adapters/corr_test_multiple_adapters_3.sh 3 5 29287 > corr_test_multiple_adapters_3.out 2>&1 &
+```
+
 
 ## Acknowledgement
 This repo is built based on the following repos:
