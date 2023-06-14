@@ -76,7 +76,7 @@ This repo assumes the following directory structure for data and pre-trained mod
 ### Download Datasets & Pre-trained Models
 1. Download processed CLIP features from this [link](https://drive.google.com/file/d/1O_RU1iFh_sbItZCTkOHUrbVIQQ_89Djj/view?usp=sharing) and put extracted files under `datasets` directory.
 2. Download [VQA](https://visualqa.org/download.html), [NLVR^2](https://lil.nlp.cornell.edu/nlvr/), and [GQA](https://cs.stanford.edu/people/dorarad/gqa/download.html) and organize the data following the default directory structure.
-3. Download pre-trained CLIP-BART+adaptation model from this [link]() and put extracted files under `VL-T5/snap` directory.
+3. Download pre-trained CLIP-BART+adaptation model from this [link](https://1drv.ms/f/s!AuM6KaUpJK3Tunf9mUd_C0mi7vvn?e=66n06L) and put extracted files under `VL-T5/snap` directory.
 
 ### Dataset Corruption
 1. Install [corruption](https://github.com/adarobustness/corruption)
