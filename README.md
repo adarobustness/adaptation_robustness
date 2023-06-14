@@ -101,7 +101,7 @@ bash extract_clip_features.sh \
 ```
 
 ## Benchmarking Robustness of Adaptation Methods
-### Running Adaptation (optional)
+### Running Adaptation
 ```bash
 # Adapt CLIP-BART+adaptation methods
 # PORT: port number, e.g., '26000'
