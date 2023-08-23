@@ -83,6 +83,7 @@ This repo assumes the following directory structure for data and pre-trained mod
 1. Install [corruption](https://github.com/adarobustness/corruption)
 2. Run `python corruption.py ...` following instructions from [corruption](https://github.com/adarobustness/corruption) to generate corrupted datasets
 3. Put corrupted datasets under `datasets` directory following the default directory structure.
+4. Or you can download the corrupted data [here](https://huggingface.co/datasets/ShuoChen99/adarobustness)
 
 ### Feature Extraction on Corrupted Datasets
 ```bash
